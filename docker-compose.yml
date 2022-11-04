@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  webapp:
+    image: mindtec/php8.1-sqlserver
+    container_name: app-estudoJs
+    volumes:
+      - ./:/var/www/html/
+    ports:
+      - "8083:80"
+    restart: "always"
