@@ -1,5 +1,7 @@
 @extends('layouts.default')
 
+@section('title', 'Estudos Victor')
+
 @section('content')
-    <p> Hello, <span>World!</span> </p>
+
 @endsection
