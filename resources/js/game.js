@@ -1,12 +1,6 @@
-import './bootstrap';
 import Integer from "lodash";
 
-console.log('Hello, World!');
-
 ////// Player coding //////////
-// Get Info
-const picture = document.getElementsByClassName('player');
-const score = document.getElementsByClassName('score');
 
 class player {
     constructor(picture, score){
@@ -36,49 +30,29 @@ class player {
 
 ////// Game Coding //////////
 
-/* Cartas */
-const baralho = document.getElementById('baralho')
-const selected = document.getElementById('selectedCard');
-
-/* botões */
-const pular = document.getElementById('pular')
-const finalizar = document.getElementById('finalizar')
-const reiniciar = document.getElementById('reiniciar')
-
 class game {
     static winning() {
-        if(player1.score > 21) {
-            return 'Player 2';
-        }
-        else if (player2.score > 21) {
-            return 'Player 1';
+        if (player1.score>player2.score) {
+            return 'Player 01';
         }
         else {
-            let points1 = player1.score - 21;
-            let points2 = player2.score - 21;
-            if( points1 > points2 ) {
-                return 'Player 1';
-            } else {
-                return 'Player 2';
-            }
+            return 'Player 02';
         }
     }
 
     static startGame() {
-        game.round = 1;
-        game.resetScore();
+        this.round = 1;
+        this.resetScore();
         player1.active();
         game.activePlayer = 1;
-        game.hideCard();
+        this.hideCard();
     }
 
     static endGame() {
         const winner = game.winning();
+        game.resetScore();
         game.hideCard();
-        setTimeout(() => {
-            alert(`Parabéns, ${winner}, Você ganhou!`);
-            game.startGame();
-        }, 250)
+        alert(`Parabéns, ${winner}, Você ganhou!`)
     }
 
     static resetScore() {
@@ -100,12 +74,12 @@ class game {
 
         if(game.activePlayer == 1 ) {
             player1.score = Integer.parseInt((player1.score)) + Integer.parseInt((cardValue));
-            if(player1.score > 21 ) {
+            if(player1.score >= 21 ) {
                 game.endGame();
             }
         } else {
             player2.score = Integer.parseInt((player2.score)) + Integer.parseInt((cardValue));
-            if(player2.score > 21 ) {
+            if(player2.score >= 21 ) {
                 game.endGame();
             }
         }
@@ -137,19 +111,3 @@ class game {
 }
 
 ////// Game Done ////////////
-
-const player1 = new player(picture[0],score[0]);
-const player2 = new player(picture[1],score[1]);
-
-game.startGame();
-
-function logActivePlayer() {
-    console.log(game.activePlayer);
-}
-
-pular.addEventListener("click", game.nextRound);
-finalizar.addEventListener("click", game.endGame);
-reiniciar.addEventListener("click", game.startGame);
-baralho.addEventListener("click", game.selectCard);
-
-

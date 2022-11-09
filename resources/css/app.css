@@ -1,7 +1,29 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.title {
+    font-size: 2.5em;
+    text-transform: uppercase;
+    margin: 24px 0;
+    color: #a7a7a7;
+}
 
-span {
-    color: coral;
+.hidden {
+    display:none;
+}
+
+.controls button {
+    margin: 5px 0;
+}
+
+.active img{
+    background-color: #3c763d;
+    border-radius: 10px;
+}
+
+.cards img{
+    cursor: pointer;
+    margin-top: 15px;
+    max-width: 150px;
+}
+
+.selected img {
+    max-width: 130px;
 }

@@ -10,8 +10,165 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
 
 console.log('Hello, World!');
+
+////// Player coding //////////
+// Get Info
+var picture = document.getElementsByClassName('player');
+var score = document.getElementsByClassName('score');
+var player = /*#__PURE__*/function () {
+  function player(picture, score) {
+    _classCallCheck(this, player);
+    this.pictureD = picture;
+    this.scoreD = score;
+  }
+  _createClass(player, [{
+    key: "score",
+    get: function get() {
+      return this.scoreD.innerHTML;
+    },
+    set: function set(value) {
+      this.scoreD.innerHTML = value;
+    }
+  }, {
+    key: "active",
+    value: function active() {
+      player1.pictureD.classList.remove('active');
+      player2.pictureD.classList.remove('active');
+      this.pictureD.classList.add('active');
+    }
+  }, {
+    key: "isActive",
+    value: function isActive() {
+      return this.pictureD.classList.contains("active");
+    }
+  }]);
+  return player;
+}(); ////// Player done //////////
+////// Game Coding //////////
+/* Cartas */
+var baralho = document.getElementById('baralho');
+var selected = document.getElementById('selectedCard');
+
+/* botões */
+var pular = document.getElementById('pular');
+var finalizar = document.getElementById('finalizar');
+var reiniciar = document.getElementById('reiniciar');
+var game = /*#__PURE__*/function () {
+  function game() {
+    _classCallCheck(this, game);
+  }
+  _createClass(game, null, [{
+    key: "winning",
+    value: function winning() {
+      if (player1.score > 21) {
+        return 'Player 2';
+      } else if (player2.score > 21) {
+        return 'Player 1';
+      } else {
+        var points1 = player1.score - 21;
+        var points2 = player2.score - 21;
+        if (points1 > points2) {
+          return 'Player 1';
+        } else {
+          return 'Player 2';
+        }
+      }
+    }
+  }, {
+    key: "startGame",
+    value: function startGame() {
+      game.round = 1;
+      game.resetScore();
+      player1.active();
+      game.activePlayer = 1;
+      game.hideCard();
+    }
+  }, {
+    key: "endGame",
+    value: function endGame() {
+      var winner = game.winning();
+      game.hideCard();
+      setTimeout(function () {
+        alert("Parab\xE9ns, ".concat(winner, ", Voc\xEA ganhou!"));
+        game.startGame();
+      }, 250);
+    }
+  }, {
+    key: "resetScore",
+    value: function resetScore() {
+      player1.score = 0;
+      player2.score = 0;
+    }
+  }, {
+    key: "showCard",
+    value: function showCard() {
+      selected.classList.remove('hidden');
+    }
+  }, {
+    key: "hideCard",
+    value: function hideCard() {
+      selected.classList.add('hidden');
+    }
+  }, {
+    key: "selectCard",
+    value: function selectCard() {
+      var cardValue = Math.floor(Math.random() * 13 + 1);
+      game.changeCardto(cardValue);
+      if (game.activePlayer == 1) {
+        player1.score = lodash__WEBPACK_IMPORTED_MODULE_1___default().parseInt(player1.score) + lodash__WEBPACK_IMPORTED_MODULE_1___default().parseInt(cardValue);
+        if (player1.score > 21) {
+          game.endGame();
+        }
+      } else {
+        player2.score = lodash__WEBPACK_IMPORTED_MODULE_1___default().parseInt(player2.score) + lodash__WEBPACK_IMPORTED_MODULE_1___default().parseInt(cardValue);
+        if (player2.score > 21) {
+          game.endGame();
+        }
+      }
+      game.showCard();
+    }
+  }, {
+    key: "nextRound",
+    value: function nextRound() {
+      game.round++;
+      if (game.activePlayer == 1) {
+        player1.pictureD.classList.remove('active');
+        player2.pictureD.classList.add('active');
+        game.activePlayer = 2;
+      } else {
+        player2.pictureD.classList.remove('active');
+        player1.pictureD.classList.add('active');
+        game.activePlayer = 1;
+      }
+      game.hideCard();
+    }
+  }, {
+    key: "changeCardto",
+    value: function changeCardto(value) {
+      var src = '/assets/carts/' + value + '.png';
+      selected.setAttribute('src', src);
+    }
+  }]);
+  return game;
+}(); ////// Game Done ////////////
+var player1 = new player(picture[0], score[0]);
+var player2 = new player(picture[1], score[1]);
+game.startGame();
+function logActivePlayer() {
+  console.log(game.activePlayer);
+}
+pular.addEventListener("click", game.nextRound);
+finalizar.addEventListener("click", game.endGame);
+reiniciar.addEventListener("click", game.startGame);
+baralho.addEventListener("click", game.selectCard);
 
 /***/ }),
 
